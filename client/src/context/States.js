@@ -4,11 +4,11 @@ const AppStates = createContext();
 
 export function StatesFunction(props) {
   // Stores current user data.
-  const [userDocument, setUserDocument] = useState({});
+  const [ApiKey, setApiKey] = useState(null);
 
   return (
     <AppStates.Provider
-      value={{ userDocument, setUserDocument }}
+      value={{ ApiKey, setApiKey }}
     >
       {props.children}
     </AppStates.Provider>
