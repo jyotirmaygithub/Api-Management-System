@@ -16,8 +16,8 @@ app.use(express.json());
 
 // available routes in the project
 app.use("/api/auth", require("./routes/auth"));
-// app.use("/api/task", require("./routes/task"));
-// app.use("/api/editProfile" , require("./routes/editProfile"));
+app.use("/api/data", require("./routes/data"));
+app.use("/api/apiKey" , require("./routes/apiKey"));
 
 app.listen(port, () => {
   console.log(`api-backend is working on port number :  ${port}`);
