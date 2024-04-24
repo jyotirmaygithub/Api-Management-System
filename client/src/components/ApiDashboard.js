@@ -34,13 +34,14 @@ export default function Dashboard() {
   async function handleDeleteApiKey() {
     const response = await handleDeleteAPI();
     returnResponse(response);
-    // setApiKey("")
   }
 
   function handleCopyApiKey() {
     // Simulate copying the API key to clipboard
     navigator.clipboard.writeText(userDocument.apiKeys);
   }
+  
+  // for toast of the toastify.
   function returnResponse(response) {
     if (response.success) {
       toast.success(response.message);
