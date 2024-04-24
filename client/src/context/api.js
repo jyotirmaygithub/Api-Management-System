@@ -6,7 +6,7 @@ const APIContext = createContext();
 
 export function APIProvider(props) {
   const { getAuthToken } = TokenStatusContext();
-  const { setApiKey, setUserDocument } = StateContext();
+  const { setData, setUserDocument } = StateContext();
 
   async function handleCreateAPI() {
     try {
@@ -79,6 +79,7 @@ export function APIProvider(props) {
     }
   }
 
+  // Fetch data only with api key of the user.
   async function fetchData() {
     try {
       const response = await fetch(
@@ -98,7 +99,6 @@ export function APIProvider(props) {
 
       const fetchedTasks = await response.json();
       console.log("fetched data = ", fetchedTasks);
-      // return fetchedTasks;
     } catch (error) {
       console.error("Error fetching Tasks:", error);
     }
