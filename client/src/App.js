@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthFunction } from "./context/front-auth";
 import { TokenStatusFunction } from "./context/tokenStatus";
 import { StatesFunction } from "./context/States";
+import { APIProvider } from "./context/api";
 import LoginPage from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import NotFoundPage from "./pages/NotFound";
@@ -18,14 +19,16 @@ function App() {
         <StatesFunction>
           <TokenStatusFunction>
             <AuthFunction>
-                  <Router>
-                    <Routes>
-                      <Route exact path="/" element={<LandingPage />} />
-                      <Route exact path="/login" element={<LoginPage />} />
-                      <Route exact path="/signup" element={<SignUp />} />
-                      <Route exact path="*" element={<NotFoundPage />} />
-                    </Routes>
-                  </Router>
+              <APIProvider>
+                <Router>
+                  <Routes>
+                    <Route exact path="/" element={<LandingPage />} />
+                    <Route exact path="/login" element={<LoginPage />} />
+                    <Route exact path="/signup" element={<SignUp />} />
+                    <Route exact path="*" element={<NotFoundPage />} />
+                  </Routes>
+                </Router>
+              </APIProvider>
               <ToastContainer autoClose={2000} transition={Slide} />
             </AuthFunction>
           </TokenStatusFunction>

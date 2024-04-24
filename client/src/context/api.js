@@ -6,7 +6,7 @@ const APIContext = createContext();
 
 export function APIProvider(props) {
   const { getAuthToken } = TokenStatusContext();
-  const { setApiKey } = StateContext();
+  const { setApiKey, setUserDocument } = StateContext();
 
   async function handleCreateAPI() {
     try {
@@ -23,8 +23,9 @@ export function APIProvider(props) {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const APIKey = await response.json();
-      setApiKey(APIKey);
+      const userDocument = await response.json();
+      console.log("Created API Key: ", userDocument.userDocument.apiKeys);
+      setUserDocument(userDocument.userDocument);
       return { success: true, message: "Key created successfully!" };
     } catch (error) {
       console.error("Error creating API key:", error);
@@ -47,6 +48,7 @@ export function APIProvider(props) {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+      handleFetchingAPI();
       return { success: true, message: "Key has been deleted successfully!" };
     } catch (error) {
       console.error("Error creating API key:", error);
@@ -69,15 +71,43 @@ export function APIProvider(props) {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const apiKey = await response.json();
-      setApiKey(apiKey.userDocument.apiKeys)
-      console.log("api key of the fetching = ",apiKey.userDocument.apiKeys)
+      const userDocument = await response.json();
+      setUserDocument(userDocument.userDocument);
+      console.log("api key of the fetching = ", userDocument.userDocument);
     } catch (error) {
       console.error("Error fetching API key:", error);
     }
   }
+
+  async function fetchData() {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_DEV_URL}/api/data/fetchData/${process.env.REACT_APP_API_KEY}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": getAuthToken(),
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const fetchedTasks = await response.json();
+      console.log("fetched data = ", fetchedTasks);
+      // return fetchedTasks;
+    } catch (error) {
+      console.error("Error fetching Tasks:", error);
+    }
+  }
+
   return (
-    <APIContext.Provider value={{ handleCreateAPI, handleDeleteAPI,handleFetchingAPI }}>
+    <APIContext.Provider
+      value={{ handleCreateAPI, handleDeleteAPI, handleFetchingAPI, fetchData }}
+    >
       {props.children}
     </APIContext.Provider>
   );
