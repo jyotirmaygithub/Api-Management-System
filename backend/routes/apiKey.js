@@ -19,8 +19,8 @@ router.put("/createAPI", fetchUserId, async (req, res) => {
       if (!userDocument) {
         return res.status(404).send("User not found");
       }
-      
-      res.send(userDocument);
+      console.log("userdocument =",userDocument)
+      res.send({userDocument});
     } catch (error) {
       console.error("Error creating API key:", error);
       res.status(500).send("Internal server error");
@@ -43,6 +43,21 @@ router.put("/createAPI", fetchUserId, async (req, res) => {
       res.send("Api key deleted successfully");
     } catch (error) {
       console.error("Error deleting API key:", error);
+      res.status(500).send("Internal server error");
+    }
+  });
+  
+  // Route to fetch user api key.
+  router.get("/APIKey", fetchUserId, async (req, res) => {
+    try {
+      // Update the user document with the undefined API key
+      const userDocument = await User.findById(req.userId).select(["-password"]);
+      if (!userDocument) {
+        return res.status(404).send("User not found");
+      }
+      res.send({userDocument});
+    } catch (error) {
+      console.error("Error fetching API key:", error);
       res.status(500).send("Internal server error");
     }
   });
