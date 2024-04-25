@@ -18,12 +18,13 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 export default function Dashboard() {
-  const { handleCreateAPI, handleDeleteAPI, handleFetchingAPI,fetchData } = useAPI();
-  const { ApiKey, setApiKey, userDocument, setUserDocument } = StateContext();
+  const { handleCreateAPI, handleDeleteAPI, handleFetchingAPI,fetchData,totalRequests } = useAPI();
+  const {  userDocument } = StateContext();
 
   useEffect(() => {
     handleFetchingAPI();
     fetchData()
+    totalRequests()
   }, []);
 
   async function handleCreateApiKey() {

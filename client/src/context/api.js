@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { TokenStatusContext } from "../context/tokenStatus";
 import { StateContext } from "./States";
 
@@ -6,7 +6,7 @@ const APIContext = createContext();
 
 export function APIProvider(props) {
   const { getAuthToken } = TokenStatusContext();
-  const { setData, setUserDocument } = StateContext();
+  const { setApiRequest, setUserDocument } = StateContext();
 
   async function handleCreateAPI() {
     try {
@@ -104,9 +104,34 @@ export function APIProvider(props) {
     }
   }
 
+  async function totalRequests() {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_DEV_URL}/api/data/api-requests-by-hour`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": getAuthToken(),
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const apiRequestDoc = await response.json();
+      console.log("total number of requests  = ", apiRequestDoc);
+      setApiRequest(apiRequestDoc)
+    } catch (error) {
+      console.error("Error fetching Tasks:", error);
+    }
+  }
+
   return (
     <APIContext.Provider
-      value={{ handleCreateAPI, handleDeleteAPI, handleFetchingAPI, fetchData }}
+      value={{ handleCreateAPI, handleDeleteAPI, handleFetchingAPI, fetchData,totalRequests }}
     >
       {props.children}
     </APIContext.Provider>
