@@ -9,17 +9,19 @@ import {
   Legend,
   ResponsiveContainer,
   Label,
+  Text,
 } from "recharts";
 import { StateContext } from "../../context/States";
 
-const initialHourlyData = Array.from({ length: 12 }, (_, index) => ({
-  hour: `${index * 2}:00-${(index * 2) + 1}:59`,
+const initialHourlyData = Array.from({ length: 6 }, (_, index) => ({
+  hour: `${index * 4}:00-${index * 4 + 3}:59`,
   totalRequest: 0,
 }));
 
 export default function ApiRequestsLineChart() {
   const { apiRequest } = StateContext();
   const [hourlyData, setHourlyData] = useState(initialHourlyData);
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   // Function to update totalRequest in hourlyData based on the date
   function updateHourlyData(timestamp) {
@@ -31,9 +33,8 @@ export default function ApiRequestsLineChart() {
       requestDate.getMonth() === currentDate.getMonth() &&
       requestDate.getFullYear() === currentDate.getFullYear()
     ) {
-      console.log("let see the timestamps = ",timestamp)
       const hour = requestDate.getHours();
-      const intervalIndex = Math.floor(hour / 2);
+      const intervalIndex = Math.floor(hour / 4);
       // Update the corresponding totalRequest value for the interval
       setHourlyData((prevData) =>
         prevData.map((hourData, index) => ({
@@ -50,6 +51,7 @@ export default function ApiRequestsLineChart() {
   useEffect(() => {
     // Reset hourlyData when date changes
     setHourlyData(initialHourlyData);
+    setCurrentDate(new Date());
   }, [new Date().getDate()]); // Trigger when the day changes
 
   useEffect(() => {
@@ -62,32 +64,37 @@ export default function ApiRequestsLineChart() {
   }, [apiRequest.requests]);
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <LineChart
-        data={hourlyData}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="hour" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="Total requests in a day" stroke="#82ca9d">
-          {hourlyData.map((entry, index) => (
-            <Label
-              key={index}
-              content={entry.totalRequest}
-              position="bottom"
-              style={{ fontSize: "12px", fill: "#82ca9d" }}
-            />
-          ))}
-        </Line>
-      </LineChart>
-    </ResponsiveContainer>
+    <div>
+      <Text x={20} y={20} textAnchor="start" fontSize={12} fill="#666">
+        {`Current Date: ${currentDate.toLocaleDateString()}`}
+      </Text>
+      <ResponsiveContainer width="100%" height={400}>
+        <LineChart
+          data={hourlyData}
+          margin={{
+            top: 40,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="hour" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="totalRequest" stroke="#82ca9d">
+            {hourlyData.map((entry, index) => (
+              <Label
+                key={index}
+                content={entry.totalRequest}
+                position="bottom"
+                style={{ fontSize: "12px", fill: "#82ca9d" }}
+              />
+            ))}
+          </Line>
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
