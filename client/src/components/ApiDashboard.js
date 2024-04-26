@@ -13,23 +13,53 @@ const Root = styled("div")({
   padding: "24px",
 });
 
-const StyledButton = styled(Button)(({ theme }) => ({
+const CreateButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),
+  backgroundColor: "#2196F3", // Blue
+  color: "white",
+  "&:hover": {
+    backgroundColor: "#1976D2", // Darker blue on hover
+  },
+}));
+
+const DeleteButton = styled(Button)(({ theme }) => ({
+  margin: theme.spacing(1),
+  backgroundColor: "#F44336", // Red
+  color: "white",
+  "&:hover": {
+    backgroundColor: "#D32F2F", // Darker red on hover
+  },
+}));
+
+const CopyButton = styled(Button)(({ theme }) => ({
+  margin: theme.spacing(1),
+  backgroundColor: "#FF9800", // Orange
+  color: "white",
+  "&:hover": {
+    backgroundColor: "#F57C00", // Darker orange on hover
+  },
 }));
 
 export default function Dashboard() {
-  const { handleCreateAPI, handleDeleteAPI, handleFetchingAPI,fetchData,totalRequests } = useAPI();
-  const {  userDocument } = StateContext();
+  const { handleCreateAPI, handleDeleteAPI, handleFetchingAPI, fetchData, totalRequests } = useAPI();
+  const { userDocument } = StateContext();
+  const [apiKeyAvailable, setApiKeyAvailable] = useState(true);
 
   useEffect(() => {
     handleFetchingAPI();
-    fetchData()
-    totalRequests()
+    fetchData();
+    totalRequests();
+    // Check if API key is available
+    if (userDocument && userDocument.apiKeys) {
+      setApiKeyAvailable(true);
+    } else {
+      setApiKeyAvailable(false);
+    }
   }, []);
 
   async function handleCreateApiKey() {
-    const respose = await handleCreateAPI();
-    returnResponse(respose);
+    const response = await handleCreateAPI();
+    returnResponse(response);
   }
 
   async function handleDeleteApiKey() {
@@ -38,8 +68,13 @@ export default function Dashboard() {
   }
 
   function handleCopyApiKey() {
-    // Simulate copying the API key to clipboard
-    navigator.clipboard.writeText(userDocument.apiKeys);
+    if (userDocument && userDocument.apiKeys) {
+      // Simulate copying the API key to clipboard
+      navigator.clipboard.writeText(userDocument.apiKeys);
+      toast.success("Copied");
+    } else {
+      toast.info("No API key available to copy");
+    }
   }
   
   // for toast of the toastify.
@@ -56,30 +91,28 @@ export default function Dashboard() {
       <Typography variant="h4" gutterBottom>
         Dashboard
       </Typography>
-      <StyledButton
+      <CreateButton
         variant="contained"
-        color="primary"
         startIcon={<AddIcon />}
         onClick={handleCreateApiKey}
       >
         Create New API Key
-      </StyledButton>
-      <StyledButton
+      </CreateButton>
+      <DeleteButton
         variant="contained"
-        color="secondary"
         startIcon={<DeleteIcon />}
         onClick={handleDeleteApiKey}
       >
         Delete Old API Key
-      </StyledButton>
-      <StyledButton
+      </DeleteButton>
+      <CopyButton
         variant="contained"
         startIcon={<FileCopyIcon />}
         onClick={handleCopyApiKey}
       >
         Copy API Key
-      </StyledButton>
-      {userDocument && (
+      </CopyButton>
+      {userDocument && userDocument.apiKeys ? (
         <div>
           <Typography variant="subtitle1" gutterBottom>
             Your API Key:
@@ -91,6 +124,10 @@ export default function Dashboard() {
             style={{ width: "100%", marginBottom: "16px" }}
           />
         </div>
+      ) : (
+        <Typography variant="subtitle1" gutterBottom>
+          No API Key available.
+        </Typography>
       )}
     </Root>
   );
