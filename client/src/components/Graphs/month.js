@@ -1,4 +1,4 @@
-import React, { PureComponent, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -9,43 +9,70 @@ import {
   Legend,
   ResponsiveContainer,
   Label,
+  Text,
 } from "recharts";
 import { StateContext } from "../../context/States";
 
-const data = [
-  { days: "0-5", totalRequest: 0 },
-  { days: "6-10", totalRequest: 0 },
-  { days: "11-15", totalRequest: 0 },
-  { days: "16-20", totalRequest: 0 },
-  { days: "21-25", totalRequest: 0 },
-  { days: "26-30", totalRequest: 0 },
+const initialMonthlyData = [
+  { month: "Jan", totalRequest: 0 },
+  { month: "Feb", totalRequest: 0 },
+  { month: "Mar", totalRequest: 0 },
+  { month: "Apr", totalRequest: 0 },
+  { month: "May", totalRequest: 0 },
+  { month: "Jun", totalRequest: 0 },
+  { month: "Jul", totalRequest: 0 },
+  { month: "Aug", totalRequest: 0 },
+  { month: "Sep", totalRequest: 0 },
+  { month: "Oct", totalRequest: 0 },
+  { month: "Nov", totalRequest: 0 },
+  { month: "Dec", totalRequest: 0 },
 ];
 
-export default function ApiRequestsLineChart() {
+export default function MonthlyApiRequestsLineChart() {
   const { apiRequest } = StateContext();
+  const [monthlyData, setMonthlyData] = useState(initialMonthlyData);
+  const [currentDate] = useState(new Date());
 
-  // Function to update totalRequest in data array based on the date
-  function updateData(date) {
-    const day = new Date(date).getDate(); // Get the day of the month
+  const currentMonth = currentDate.toLocaleString("default", { month: "long" });
+  console.log("currreent month =", currentMonth);
 
-    // Determine the range the date falls into and update the corresponding totalRequest value
-    data.forEach((item) => {
-      const [start, end] = item.days.split("-").map(Number); // Split days range into start and end numbers
-      if (day >= start && day <= end) {
-        item.totalRequest++; // Increment totalRequest for the corresponding range
-      }
-    });
-    // console.log("after manipulations =", data);
+  // Function to update totalRequest in monthlyData based on the month
+  function updateMonthlyData(timestamp) {
+    const requestDate = new Date(timestamp);
+    const monthIndex = requestDate.getMonth(); // Get the month index (0 - January, 1 - February, ...)
+    setMonthlyData((prevData) =>
+      prevData.map((monthData, index) => ({
+        ...monthData,
+        totalRequest:
+          index === monthIndex
+            ? monthData.totalRequest + 1
+            : monthData.totalRequest,
+      }))
+    );
   }
-  apiRequest.requests &&
-    apiRequest.requests.map((request) => {
-      return updateData(request.timestamp);
-    });
+
+  useEffect(() => {
+    // Reset monthlyData when component mounts or when month changes
+    setMonthlyData(initialMonthlyData);
+  }, [new Date().getMonth()]); // Trigger when the month changes
+
+  useEffect(() => {
+    // Update monthly data when apiRequest.requests change
+    if (apiRequest.requests) {
+      apiRequest.requests.forEach((request) => {
+        updateMonthlyData(request.timestamp);
+      });
+    }
+  }, [apiRequest.requests]);
+
   return (
-    <>
+    <div className="space-y-8">
+      <Text x={20} y={20} textAnchor="start" fontSize={12} fill="#666">
+        {`Current month: ${currentMonth}`}
+      </Text>
       <ResponsiveContainer width="100%" height={400}>
         <LineChart
-          data={data}
+          data={monthlyData}
           margin={{
             top: 5,
             right: 30,
@@ -54,12 +81,12 @@ export default function ApiRequestsLineChart() {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="days" />
+          <XAxis dataKey="month" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="Total requests in a month" stroke="#82ca9d">
-            {data.map((entry, index) => (
+          <Line type="monotone" dataKey="totalRequest" stroke="#82ca9d">
+            {monthlyData.map((entry, index) => (
               <Label
                 key={index}
                 content={entry.totalRequest}
@@ -70,6 +97,6 @@ export default function ApiRequestsLineChart() {
           </Line>
         </LineChart>
       </ResponsiveContainer>
-    </>
+    </div>
   );
 }
