@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
   Label,
 } from "recharts";
-import { StateContext } from "../context/States";
+import { StateContext } from "../../context/States";
 
 const initialHourlyData = Array.from({ length: 12 }, (_, index) => ({
   hour: `${index * 2}:00-${(index * 2) + 1}:59`,
@@ -77,7 +77,7 @@ export default function ApiRequestsLineChart() {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="totalRequest" stroke="#82ca9d">
+        <Line type="monotone" dataKey="Total requests in a day" stroke="#82ca9d">
           {hourlyData.map((entry, index) => (
             <Label
               key={index}

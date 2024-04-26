@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
   Label,
 } from "recharts";
-import { StateContext } from "../context/States";
+import { StateContext } from "../../context/States";
 
 const data = [
   { days: "0-5", totalRequest: 0 },
@@ -58,7 +58,7 @@ export default function ApiRequestsLineChart() {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="totalRequest" stroke="#82ca9d">
+          <Line type="monotone" dataKey="Total requests in a month" stroke="#82ca9d">
             {data.map((entry, index) => (
               <Label
                 key={index}
