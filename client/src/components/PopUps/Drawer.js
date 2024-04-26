@@ -48,6 +48,10 @@ export default function AnchorTemporaryDrawer() {
     if (value === "Logout") {
       deleteAuthTokenCookie();
       navigate(`/login`);
+    } else if (value === "Docs") {
+      navigate(`/documentation`);
+    } else {
+      navigate(`/Api-usage`);
     }
   }
   const icons = [
@@ -72,11 +76,7 @@ export default function AnchorTemporaryDrawer() {
         </Avatar>
       </div>
       <List>
-        {[
-          "API Usage",
-          "Docs",
-          "Logout",
-        ].map((text, index) => (
+        {["API Usage", "Docs", "Logout"].map((text, index) => (
           <ListItem key={text} disablePadding onClick={() => handleClick(text)}>
             <ListItemButton>
               <ListItemIcon>{icons[index % iconCount]}</ListItemIcon>
@@ -94,7 +94,7 @@ export default function AnchorTemporaryDrawer() {
         <Button className="space-x-2" onClick={toggleDrawer("avatar", true)}>
           {/* Render your Avatar component here */}
           <MenuOutlined sx={{ color: "black" }} />
-          <Avatar  alt="User Avatar">
+          <Avatar alt="User Avatar">
             <div className="text-black">
               {userDocument.name && userDocument.name.charAt(0).toUpperCase()}
             </div>

@@ -11,6 +11,9 @@ import LoginPage from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import NotFoundPage from "./pages/NotFound";
 import LandingPage from "./pages/LandingPage";
+import Graphs from "./pages/Graphs";
+import HeaderLayout from "./Layout/HeaderLayout";
+import Documentation from "./pages/Documentation"
 
 function App() {
   return (
@@ -25,6 +28,8 @@ function App() {
                     <Route exact path="/" element={<LandingPage />} />
                     <Route exact path="/login" element={<LoginPage />} />
                     <Route exact path="/signup" element={<SignUp />} />
+                    <Route exact path="/Api-usage" element={<><HeaderLayout /><Graphs /></>} />
+                    <Route exact path="/documentation" element={<><HeaderLayout /><Documentation /></>} />
                     <Route exact path="*" element={<NotFoundPage />} />
                   </Routes>
                 </Router>

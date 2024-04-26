@@ -4,7 +4,7 @@ import Paid from "../components/Boxes/paid"
 
 export default function Boxes() {
   return (
-    <div className='flex justify-around flex-wrap'>
+    <div className='flex justify-around flex-wrap my-10'>
       <Free/>
       <Paid/>
     </div>

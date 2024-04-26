@@ -35,7 +35,7 @@ const ApiUsageDetails = () => {
         Monthly Limit: 200
       </Typography>
       <Typography variant="caption" color="textSecondary">
-      * Discover the benefits of our free tier usage today!
+        * Free service available for 3 months from the date of first API usage.
       </Typography>
     </Box>
   );

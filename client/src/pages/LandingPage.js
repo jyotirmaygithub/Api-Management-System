@@ -3,6 +3,7 @@ import ApiDashboard from "../components/ApiDashboard"
 import HeaderLayout from '../Layout/HeaderLayout'
 import Intro from "../components/Intro"
 import Boxes from '../Layout/Boxes'
+import ApiUsage from '../Layout/ApiUsage'
 
 export default function LandingPage() {
   return (
@@ -11,6 +12,7 @@ export default function LandingPage() {
       <Intro/>
       <Boxes/>
       <ApiDashboard/>
+      <ApiUsage/>
     </div>
   )
 }

@@ -41,7 +41,13 @@ const CopyButton = styled(Button)(({ theme }) => ({
 }));
 
 export default function Dashboard() {
-  const { handleCreateAPI, handleDeleteAPI, handleFetchingAPI, fetchData, totalRequests } = useAPI();
+  const {
+    handleCreateAPI,
+    handleDeleteAPI,
+    handleFetchingAPI,
+    fetchData,
+    totalRequests,
+  } = useAPI();
   const { userDocument } = StateContext();
   const [apiKeyAvailable, setApiKeyAvailable] = useState(true);
 
@@ -76,7 +82,7 @@ export default function Dashboard() {
       toast.info("No API key available to copy");
     }
   }
-  
+
   // for toast of the toastify.
   function returnResponse(response) {
     if (response.success) {
@@ -87,7 +93,7 @@ export default function Dashboard() {
   }
 
   return (
-    <Root>
+    <Root className="mx-4 my-10 space-y-6">
       <Typography variant="h4" gutterBottom>
         Dashboard
       </Typography>
@@ -115,14 +121,8 @@ export default function Dashboard() {
       {userDocument && userDocument.apiKeys ? (
         <div>
           <Typography variant="subtitle1" gutterBottom>
-            Your API Key:
+            Your API Key : {userDocument.apiKeys}
           </Typography>
-          <input
-            type="text"
-            value={userDocument.apiKeys}
-            readOnly
-            style={{ width: "100%", marginBottom: "16px" }}
-          />
         </div>
       ) : (
         <Typography variant="subtitle1" gutterBottom>
