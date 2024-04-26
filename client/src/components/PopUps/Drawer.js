@@ -20,8 +20,8 @@ import { StateContext } from "../../context/States";
 import { TokenStatusContext } from "../../context/tokenStatus";
 
 const letterStyles = {
-  backgroundColor: "#f0f0f0", // Change this to your desired color
-  color: "#333", // Change this to your desired color
+  backgroundColor: "#f0f0f0", 
+  color: "#333", 
   width: 150,
   height: 150,
   fontSize: "72px",

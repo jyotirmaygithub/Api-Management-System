@@ -19,11 +19,11 @@ router.get("/fetchData/:id", fetchUserId, async (req, res) => {
       return res.status(404).send("data is not available");
     }
 
+    // Check daily limit
     const dailyRequestCount = await Request.countDocuments({
       user_id: req.userId,
       timestamp: { $gte: dayjs().startOf("day").toDate() },
     });
-    console.log("daily addups = ", dailyRequestCount);
 
     if (dailyRequestCount >= 50) {
       return res.status(429).json({ error: "Daily request limit exceeded" });
@@ -34,11 +34,12 @@ router.get("/fetchData/:id", fetchUserId, async (req, res) => {
       user_id: req.userId,
       timestamp: { $gte: dayjs().startOf("month").toDate() },
     });
-    console.log("monthly addups =  ", monthlyRequestCount);
+
     if (monthlyRequestCount >= 200) {
       return res.status(429).json({ error: "Monthly request limit exceeded" });
     }
-    console.log("for how many times in a request")
+
+    // creating a document
     await Request.create({
       user_id: req.userId,
       endpoint: req.path,
@@ -52,11 +53,10 @@ router.get("/fetchData/:id", fetchUserId, async (req, res) => {
   }
 });
 
-router.get("/api-requests-by-hour", fetchUserId, async (req, res) => {
+router.get("/api-requests", fetchUserId, async (req, res) => {
   try {
     const requests = await Request.find({ user_id: req.userId });
 
-    // console.log("Total number of requests = ", requests);
     res.send({ requests });
   } catch (err) {
     console.error(err);

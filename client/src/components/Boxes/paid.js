@@ -10,16 +10,15 @@ const ApiUsageDetails = () => {
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    padding: "16px", // You can adjust the padding as needed
-    margin: "16px", // You can adjust the margin as needed
-    borderRadius: "8px",
-    backgroundColor: "#ffffff", // You can change the background color
-    boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)", // You can adjust the shadow
+    padding: "16px", 
+    margin: "16px", 
+    backgroundColor: "#ffffff", 
+    boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)",
   };
 
   const iconStyle = {
-    marginBottom: "8px", // You can adjust the spacing
-    color: "#1976d2", // You can adjust the color
+    marginBottom: "8px",
+    color: "#1976d2",
     fontSize: "40px",
   };
 

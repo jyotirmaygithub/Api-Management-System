@@ -34,7 +34,6 @@ export default function MonthlyApiRequestsLineChart() {
   const [currentDate] = useState(new Date());
 
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
-  console.log("currreent month =", currentMonth);
 
   // Function to update totalRequest in monthlyData based on the month
   function updateMonthlyData(timestamp) {

@@ -24,7 +24,6 @@ export function APIProvider(props) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const userDocument = await response.json();
-      console.log("Created API Key: ", userDocument.userDocument.apiKeys);
       setUserDocument(userDocument.userDocument);
       return { success: true, message: "Key created successfully!" };
     } catch (error) {
@@ -73,7 +72,6 @@ export function APIProvider(props) {
       }
       const userDocument = await response.json();
       setUserDocument(userDocument.userDocument);
-      console.log("api key of the fetching = ", userDocument.userDocument);
     } catch (error) {
       console.error("Error fetching API key:", error);
     }
@@ -107,7 +105,7 @@ export function APIProvider(props) {
   async function totalRequests() {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_DEV_URL}/api/data/api-requests-by-hour`,
+        `${process.env.REACT_APP_DEV_URL}/api/data/api-requests`,
         {
           method: "GET",
           headers: {
@@ -122,7 +120,6 @@ export function APIProvider(props) {
       }
 
       const apiRequestDoc = await response.json();
-      console.log("total number of requests  = ", apiRequestDoc);
       setApiRequest(apiRequestDoc)
     } catch (error) {
       console.error("Error fetching Tasks:", error);

@@ -24,8 +24,6 @@ export default function FirstDate() {
     boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)",
   };
 
-  // Extracting the timestamp of the first API call
-
   return (
     <Box style={containerStyle}>
       <Typography variant="h6" gutterBottom>
