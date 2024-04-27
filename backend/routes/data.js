@@ -9,11 +9,15 @@ const Request = require("../models/RequestLog");
 // Route: to fetch existing data.
 router.get("/fetchData/:id", fetchUserId, async (req, res) => {
   try {
-    const user = await User.findOne({ apiKeys: req.params.id });
+    const user = await User.findOne({ _id: req.userId });
     if (!user) {
-      return res.status(404).send("api key is not available");
+      return res.status(404).send("user is not available");
     }
 
+    const apiCheck = user.apiKeys.includes(req.params.id);
+    if (!apiCheck) {
+      return res.status(404).send("API key is not available");
+    }
     const existingData = await Data.find();
     if (!existingData) {
       return res.status(404).send("data is not available");

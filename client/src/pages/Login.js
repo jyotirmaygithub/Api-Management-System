@@ -64,6 +64,7 @@ export default function Login() {
     }
     // If all checks pass, proceed with API call
     try {
+      toast.info('Logging in may take some time...')
       const response = await handleExistingUser(
         combinedState.email,
         combinedState.password
@@ -162,6 +163,7 @@ export default function Login() {
             <div className="flex h-[50px] justify-center">
               <GoogleLogin
                 onSuccess={async (credentialResponse) => {
+                  { toast.info('Logging in may take some time...')}
                   returnResponse(
                     await handleGoogleLogin(credentialResponse.credential)
                   );

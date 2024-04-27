@@ -64,6 +64,7 @@ export default function Login() {
       return;
     }
     try {
+      toast.info('Signing up may take some time...')
       const response = await handleCreateUser(
         combinedState.name,
         combinedState.email,
@@ -174,6 +175,7 @@ export default function Login() {
             <div className="flex h-[50px] justify-center">
               <GoogleLogin
                 onSuccess={async (credentialResponse) => {
+                  { toast.info('Signing up may take some time...')}
                   returnResponse(
                     await handleGoogleLogin(credentialResponse.credential)
                   );
