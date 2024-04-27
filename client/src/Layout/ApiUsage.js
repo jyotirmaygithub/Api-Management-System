@@ -9,8 +9,8 @@ export default function ApiUsage() {
       <h1 className="text-center text-2xl font-bold mb-4">API Usage Statistics</h1>
       <div className='flex flex-wrap justify-around'>
         <FirstDate />
-        <EndDate />
         <TotalRequests />
+        <EndDate />
       </div>
     </div>
   );

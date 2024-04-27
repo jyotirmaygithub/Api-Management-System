@@ -4,7 +4,7 @@ const codeSnippet = `
 
 async function fetchData() {
   try {
-    const apiUrl = \`\${process.env.REACT_APP_DEV_URL}/api/data/fetchData/\${Need to provide api key here}\`;
+    const apiUrl = \`\https://api-management-system.onrender.com/api/data/fetchData/\${Need to provide api key here}\`;
 
     // Make a GET request to the API with the authentication token
     const response = await fetch(apiUrl, {
